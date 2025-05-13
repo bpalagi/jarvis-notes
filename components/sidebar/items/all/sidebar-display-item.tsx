@@ -36,7 +36,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
   const actionMap = {
     chats: async (item: any) => {},
     presets: async (item: any) => {},
-    prompts: async (item: any) => {},
+    workflows: async (item: any) => {},
     files: async (item: any) => {},
     collections: async (item: any) => {},
     assistants: async (assistant: Tables<"assistants">) => {
@@ -52,7 +52,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
           assistant.include_workspace_instructions,
         model: assistant.model,
         name: `Chat with ${assistant.name}`,
-        prompt: assistant.prompt,
+        workflow: assistant.workflow,
         temperature: assistant.temperature,
         embeddings_provider: assistant.embeddings_provider
       })

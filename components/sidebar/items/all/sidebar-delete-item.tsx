@@ -15,7 +15,7 @@ import { deleteCollection } from "@/db/collections"
 import { deleteFile } from "@/db/files"
 import { deleteModel } from "@/db/models"
 import { deletePreset } from "@/db/presets"
-import { deletePrompt } from "@/db/prompts"
+import { deleteWorkflow } from "@/db/workflows"
 import { deleteFileFromStorage } from "@/db/storage/files"
 import { deleteTool } from "@/db/tools"
 import { Tables } from "@/supabase/types"
@@ -34,7 +34,7 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
   const {
     setChats,
     setPresets,
-    setPrompts,
+    setWorkflows,
     setFiles,
     setCollections,
     setAssistants,
@@ -53,8 +53,8 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
     presets: async (preset: Tables<"presets">) => {
       await deletePreset(preset.id)
     },
-    prompts: async (prompt: Tables<"prompts">) => {
-      await deletePrompt(prompt.id)
+    workflows: async (workflow: Tables<"workflows">) => {
+      await deleteWorkflow(workflow.id)
     },
     files: async (file: Tables<"files">) => {
       await deleteFileFromStorage(file.file_path)
@@ -80,7 +80,7 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
   const stateUpdateFunctions = {
     chats: setChats,
     presets: setPresets,
-    prompts: setPrompts,
+    workflows: setWorkflows,
     files: setFiles,
     collections: setCollections,
     assistants: setAssistants,

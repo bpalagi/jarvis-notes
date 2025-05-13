@@ -62,11 +62,11 @@ import {
   updatePreset
 } from "@/db/presets"
 import {
-  createPromptWorkspaces,
-  deletePromptWorkspace,
-  getPromptWorkspacesByPromptId,
-  updatePrompt
-} from "@/db/prompts"
+  createWorkflowWorkspaces,
+  deleteWorkflowWorkspace,
+  getWorkflowWorkspacesByWorkflowId,
+  updateWorkflow
+} from "@/db/workflows"
 import {
   getAssistantImageFromStorage,
   uploadAssistantImage
@@ -107,7 +107,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
     selectedWorkspace,
     setChats,
     setPresets,
-    setPrompts,
+    setWorkflows,
     setFiles,
     setCollections,
     setAssistants,
@@ -173,7 +173,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
   const renderState = {
     chats: null,
     presets: null,
-    prompts: null,
+    workflows: null,
     files: null,
     collections: {
       startingCollectionFiles,
@@ -202,7 +202,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
   const fetchDataFunctions = {
     chats: null,
     presets: null,
-    prompts: null,
+    workflows: null,
     files: null,
     collections: async (collectionId: string) => {
       const collectionFiles =
@@ -235,8 +235,8 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
       const item = await getPresetWorkspacesByPresetId(presetId)
       return item.workspaces
     },
-    prompts: async (promptId: string) => {
-      const item = await getPromptWorkspacesByPromptId(promptId)
+    workflows: async (workflowId: string) => {
+      const item = await getWorkflowWorkspacesByWorkflowId(workflowId)
       return item.workspaces
     },
     files: async (fileId: string) => {
@@ -341,19 +341,22 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
 
       return updatedPreset
     },
-    prompts: async (promptId: string, updateState: TablesUpdate<"prompts">) => {
-      const updatedPrompt = await updatePrompt(promptId, updateState)
+    workflows: async (
+      workflowId: string,
+      updateState: TablesUpdate<"workflows">
+    ) => {
+      const updatedWorkflow = await updateWorkflow(workflowId, updateState)
 
       await handleWorkspaceUpdates(
         startingWorkspaces,
         selectedWorkspaces,
-        promptId,
-        deletePromptWorkspace,
-        createPromptWorkspaces as any,
-        "prompt_id"
+        workflowId,
+        deleteWorkflowWorkspace,
+        createWorkflowWorkspaces as any,
+        "workflow_id"
       )
 
-      return updatedPrompt
+      return updatedWorkflow
     },
     files: async (fileId: string, updateState: TablesUpdate<"files">) => {
       const updatedFile = await updateFile(fileId, updateState)
@@ -574,7 +577,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
   const stateUpdateFunctions = {
     chats: setChats,
     presets: setPresets,
-    prompts: setPrompts,
+    workflows: setWorkflows,
     files: setFiles,
     collections: setCollections,
     assistants: setAssistants,

@@ -17,7 +17,7 @@ import { createCollection } from "@/db/collections"
 import { createFileBasedOnExtension } from "@/db/files"
 import { createModel } from "@/db/models"
 import { createPreset } from "@/db/presets"
-import { createPrompt } from "@/db/prompts"
+import { createWorkflow } from "@/db/workflows"
 import {
   getAssistantImageFromStorage,
   uploadAssistantImage
@@ -50,7 +50,7 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
     selectedWorkspace,
     setChats,
     setPresets,
-    setPrompts,
+    setWorkflows,
     setFiles,
     setCollections,
     setAssistants,
@@ -66,7 +66,7 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
   const createFunctions = {
     chats: createChat,
     presets: createPreset,
-    prompts: createPrompt,
+    workflows: createWorkflow,
     files: async (
       createState: { file: File } & TablesInsert<"files">,
       workspaceId: string
@@ -176,7 +176,7 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
   const stateUpdateFunctions = {
     chats: setChats,
     presets: setPresets,
-    prompts: setPrompts,
+    workflows: setWorkflows,
     files: setFiles,
     collections: setCollections,
     assistants: setAssistants,

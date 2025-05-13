@@ -5,7 +5,7 @@ import { updateCollection } from "@/db/collections"
 import { updateFile } from "@/db/files"
 import { updateModel } from "@/db/models"
 import { updatePreset } from "@/db/presets"
-import { updatePrompt } from "@/db/prompts"
+import { updateWorkflow } from "@/db/workflows"
 import { updateTool } from "@/db/tools"
 import { cn } from "@/lib/utils"
 import { Tables } from "@/supabase/types"
@@ -19,7 +19,7 @@ import { FileItem } from "./items/files/file-item"
 import { Folder } from "./items/folders/folder-item"
 import { ModelItem } from "./items/models/model-item"
 import { PresetItem } from "./items/presets/preset-item"
-import { PromptItem } from "./items/prompts/prompt-item"
+import { WorkflowItem } from "./items/workflows/workflow-item"
 import { ToolItem } from "./items/tools/tool-item"
 
 interface SidebarDataListProps {
@@ -36,7 +36,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   const {
     setChats,
     setPresets,
-    setPrompts,
+    setWorkflows,
     setFiles,
     setCollections,
     setAssistants,
@@ -60,8 +60,10 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
       case "presets":
         return <PresetItem key={item.id} preset={item as Tables<"presets">} />
 
-      case "prompts":
-        return <PromptItem key={item.id} prompt={item as Tables<"prompts">} />
+      case "workflows":
+        return (
+          <WorkflowItem key={item.id} workflow={item as Tables<"workflows">} />
+        )
 
       case "files":
         return <FileItem key={item.id} file={item as Tables<"files">} />
@@ -135,7 +137,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   const updateFunctions = {
     chats: updateChat,
     presets: updatePreset,
-    prompts: updatePrompt,
+    workflows: updateWorkflow,
     files: updateFile,
     collections: updateCollection,
     assistants: updateAssistant,
@@ -146,7 +148,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   const stateUpdateFunctions = {
     chats: setChats,
     presets: setPresets,
-    prompts: setPrompts,
+    workflows: setWorkflows,
     files: setFiles,
     collections: setCollections,
     assistants: setAssistants,

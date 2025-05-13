@@ -9,7 +9,7 @@ import { getFileWorkspacesByWorkspaceId } from "@/db/files"
 import { getFoldersByWorkspaceId } from "@/db/folders"
 import { getModelWorkspacesByWorkspaceId } from "@/db/models"
 import { getPresetWorkspacesByWorkspaceId } from "@/db/presets"
-import { getPromptWorkspacesByWorkspaceId } from "@/db/prompts"
+import { getWorkflowWorkspacesByWorkspaceId } from "@/db/workflows"
 import { getAssistantImageFromStorage } from "@/db/storage/assistant-images"
 import { getToolWorkspacesByWorkspaceId } from "@/db/tools"
 import { getWorkspaceById } from "@/db/workspaces"
@@ -40,7 +40,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setFolders,
     setFiles,
     setPresets,
-    setPrompts,
+    setWorkflows,
     setTools,
     setModels,
     selectedWorkspace,
@@ -147,8 +147,8 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     const presetData = await getPresetWorkspacesByWorkspaceId(workspaceId)
     setPresets(presetData.presets)
 
-    const promptData = await getPromptWorkspacesByWorkspaceId(workspaceId)
-    setPrompts(promptData.prompts)
+    const promptData = await getWorkflowWorkspacesByWorkspaceId(workspaceId)
+    setWorkflows(promptData.prompts)
 
     const toolData = await getToolWorkspacesByWorkspaceId(workspaceId)
     setTools(toolData.tools)
