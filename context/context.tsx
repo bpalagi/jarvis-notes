@@ -32,8 +32,8 @@ interface ChatbotUIContext {
   setModels: Dispatch<SetStateAction<Tables<"models">[]>>
   presets: Tables<"presets">[]
   setPresets: Dispatch<SetStateAction<Tables<"presets">[]>>
-  prompts: Tables<"prompts">[]
-  setPrompts: Dispatch<SetStateAction<Tables<"prompts">[]>>
+  workflows: Tables<"workflows">[]
+  setWorkflows: Dispatch<SetStateAction<Tables<"workflows">[]>>
   tools: Tables<"tools">[]
   setTools: Dispatch<SetStateAction<Tables<"tools">[]>>
   workspaces: Tables<"workspaces">[]
@@ -88,8 +88,8 @@ interface ChatbotUIContext {
   setIsGenerating: Dispatch<SetStateAction<boolean>>
 
   // CHAT INPUT COMMAND STORE
-  isPromptPickerOpen: boolean
-  setIsPromptPickerOpen: Dispatch<SetStateAction<boolean>>
+  isWorkflowPickerOpen: boolean
+  setIsWorkflowPickerOpen: Dispatch<SetStateAction<boolean>>
   slashCommand: string
   setSlashCommand: Dispatch<SetStateAction<string>>
   isFilePickerOpen: boolean
@@ -100,8 +100,8 @@ interface ChatbotUIContext {
   setIsToolPickerOpen: Dispatch<SetStateAction<boolean>>
   toolCommand: string
   setToolCommand: Dispatch<SetStateAction<string>>
-  focusPrompt: boolean
-  setFocusPrompt: Dispatch<SetStateAction<boolean>>
+  focusWorkflow: boolean
+  setFocusWorkflow: Dispatch<SetStateAction<boolean>>
   focusFile: boolean
   setFocusFile: Dispatch<SetStateAction<boolean>>
   focusTool: boolean
@@ -158,8 +158,8 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setModels: () => {},
   presets: [],
   setPresets: () => {},
-  prompts: [],
-  setPrompts: () => {},
+  workflows: [],
+  setWorkflows: () => {},
   tools: [],
   setTools: () => {},
   workspaces: [],
@@ -214,8 +214,8 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setAbortController: () => {},
 
   // CHAT INPUT COMMAND STORE
-  isPromptPickerOpen: false,
-  setIsPromptPickerOpen: () => {},
+  isWorkflowPickerOpen: false,
+  setIsWorkflowPickerOpen: () => {},
   slashCommand: "",
   setSlashCommand: () => {},
   isFilePickerOpen: false,
@@ -226,8 +226,8 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setIsToolPickerOpen: () => {},
   toolCommand: "",
   setToolCommand: () => {},
-  focusPrompt: false,
-  setFocusPrompt: () => {},
+  focusWorkflow: false,
+  setFocusWorkflow: () => {},
   focusFile: false,
   setFocusFile: () => {},
   focusTool: false,

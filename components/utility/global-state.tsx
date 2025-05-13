@@ -46,7 +46,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [folders, setFolders] = useState<Tables<"folders">[]>([])
   const [models, setModels] = useState<Tables<"models">[]>([])
   const [presets, setPresets] = useState<Tables<"presets">[]>([])
-  const [prompts, setPrompts] = useState<Tables<"prompts">[]>([])
+  const [workflows, setWorkflows] = useState<Tables<"workflows">[]>([])
   const [tools, setTools] = useState<Tables<"tools">[]>([])
   const [workspaces, setWorkspaces] = useState<Tables<"workspaces">[]>([])
 
@@ -95,13 +95,13 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
     useState<AbortController | null>(null)
 
   // CHAT INPUT COMMAND STORE
-  const [isPromptPickerOpen, setIsPromptPickerOpen] = useState(false)
+  const [isWorkflowPickerOpen, setIsWorkflowPickerOpen] = useState(false)
   const [slashCommand, setSlashCommand] = useState("")
   const [isFilePickerOpen, setIsFilePickerOpen] = useState(false)
   const [hashtagCommand, setHashtagCommand] = useState("")
   const [isToolPickerOpen, setIsToolPickerOpen] = useState(false)
   const [toolCommand, setToolCommand] = useState("")
-  const [focusPrompt, setFocusPrompt] = useState(false)
+  const [focusWorkflow, setFocusWorkflow] = useState(false)
   const [focusFile, setFocusFile] = useState(false)
   const [focusTool, setFocusTool] = useState(false)
   const [focusAssistant, setFocusAssistant] = useState(false)
@@ -219,8 +219,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setModels,
         presets,
         setPresets,
-        prompts,
-        setPrompts,
+        workflows,
+        setWorkflows,
         tools,
         setTools,
         workspaces,
@@ -275,8 +275,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setAbortController,
 
         // CHAT INPUT COMMAND STORE
-        isPromptPickerOpen,
-        setIsPromptPickerOpen,
+        isWorkflowPickerOpen,
+        setIsWorkflowPickerOpen,
         slashCommand,
         setSlashCommand,
         isFilePickerOpen,
@@ -287,8 +287,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setIsToolPickerOpen,
         toolCommand,
         setToolCommand,
-        focusPrompt,
-        setFocusPrompt,
+        focusWorkflow,
+        setFocusWorkflow,
         focusFile,
         setFocusFile,
         focusTool,

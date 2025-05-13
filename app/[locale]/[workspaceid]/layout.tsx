@@ -147,8 +147,8 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     const presetData = await getPresetWorkspacesByWorkspaceId(workspaceId)
     setPresets(presetData.presets)
 
-    const promptData = await getWorkflowWorkspacesByWorkspaceId(workspaceId)
-    setWorkflows(promptData.prompts)
+    const workflowData = await getWorkflowWorkspacesByWorkspaceId(workspaceId)
+    setWorkflows(workflowData.workflows)
 
     const toolData = await getToolWorkspacesByWorkspaceId(workspaceId)
     setTools(toolData.tools)

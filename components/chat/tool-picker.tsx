@@ -2,7 +2,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { Tables } from "@/supabase/types"
 import { IconBolt } from "@tabler/icons-react"
 import { FC, useContext, useEffect, useRef } from "react"
-import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
+import { useWorkflowAndCommand } from "./chat-hooks/use-workflow-and-command"
 
 interface ToolPickerProps {}
 
@@ -15,7 +15,7 @@ export const ToolPicker: FC<ToolPickerProps> = ({}) => {
     setIsToolPickerOpen
   } = useContext(ChatbotUIContext)
 
-  const { handleSelectTool } = usePromptAndCommand()
+  const { handleSelectTool } = useWorkflowAndCommand()
 
   const itemsRef = useRef<(HTMLDivElement | null)[]>([])
 

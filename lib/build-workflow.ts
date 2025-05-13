@@ -3,31 +3,31 @@ import { ChatPayload, MessageImage } from "@/types"
 import { encode } from "gpt-tokenizer"
 import { getBase64FromDataURL, getMediaTypeFromDataURL } from "@/lib/utils"
 
-const buildBasePrompt = (
-  prompt: string,
+const buildBaseWorkflow = (
+  workflow: string,
   profileContext: string,
   workspaceInstructions: string,
   assistant: Tables<"assistants"> | null
 ) => {
-  let fullPrompt = ""
+  let fullWorkflow = ""
 
   if (assistant) {
-    fullPrompt += `<INJECT ROLE>\nYou are not an AI. You are ${assistant.name}.\n</INJECT ROLE>\n\n`
+    fullWorkflow += `<INJECT ROLE>\nYou are not an AI. You are ${assistant.name}.\n</INJECT ROLE>\n\n`
   }
 
-  fullPrompt += `Today is ${new Date().toLocaleDateString()}.\n\n`
+  fullWorkflow += `Today is ${new Date().toLocaleDateString()}.\n\n`
 
   if (profileContext) {
-    fullPrompt += `User Info:\n${profileContext}\n\n`
+    fullWorkflow += `User Info:\n${profileContext}\n\n`
   }
 
   if (workspaceInstructions) {
-    fullPrompt += `System Instructions:\n${workspaceInstructions}\n\n`
+    fullWorkflow += `System Instructions:\n${workspaceInstructions}\n\n`
   }
 
-  fullPrompt += `User Instructions:\n${prompt}`
+  fullWorkflow += `User Instructions:\n${workflow}`
 
-  return fullPrompt
+  return fullWorkflow
 }
 
 export async function buildFinalMessages(
@@ -44,15 +44,15 @@ export async function buildFinalMessages(
     chatFileItems
   } = payload
 
-  const BUILT_PROMPT = buildBasePrompt(
-    chatSettings.prompt,
+  const BUILT_PROMPT = buildBaseWorkflow(
+    chatSettings.workflow,
     chatSettings.includeProfileContext ? profile.profile_context || "" : "",
     chatSettings.includeWorkspaceInstructions ? workspaceInstructions : "",
     assistant
   )
 
   const CHUNK_SIZE = chatSettings.contextLength
-  const PROMPT_TOKENS = encode(chatSettings.prompt).length
+  const PROMPT_TOKENS = encode(chatSettings.workflow).length
 
   let remainingTokens = CHUNK_SIZE - PROMPT_TOKENS
 
@@ -225,7 +225,7 @@ function adaptMessagesForGeminiVision(messages: any[]) {
   // Gemini Pro Vision cannot process multiple messages
   // Reformat, using all texts and last visual only
 
-  const basePrompt = messages[0].parts[0].text
+  const baseWorkflow = messages[0].parts[0].text
   const baseRole = messages[0].role
   const lastMessage = messages[messages.length - 1]
   const visualMessageParts = lastMessage.parts
@@ -233,7 +233,7 @@ function adaptMessagesForGeminiVision(messages: any[]) {
     {
       role: "user",
       parts: [
-        `${baseRole}:\n${basePrompt}\n\nuser:\n${visualMessageParts[0].text}\n\n`,
+        `${baseRole}:\n${baseWorkflow}\n\nuser:\n${visualMessageParts[0].text}\n\n`,
         visualMessageParts.slice(1)
       ]
     }

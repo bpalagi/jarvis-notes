@@ -1,9 +1,9 @@
 import { ChatbotUIContext } from "@/context/context"
 import { FC, useContext } from "react"
 import { AssistantPicker } from "./assistant-picker"
-import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
+import { useWorkflowAndCommand } from "./chat-hooks/use-workflow-and-command"
 import { FilePicker } from "./file-picker"
-import { PromptPicker } from "./prompt-picker"
+import { WorkflowPicker } from "./workflow-picker"
 import { ToolPicker } from "./tool-picker"
 
 interface ChatCommandInputProps {}
@@ -16,16 +16,16 @@ export const ChatCommandInput: FC<ChatCommandInputProps> = ({}) => {
     isFilePickerOpen,
     setIsFilePickerOpen,
     hashtagCommand,
-    focusPrompt,
+    focusWorkflow,
     focusFile
   } = useContext(ChatbotUIContext)
 
   const { handleSelectUserFile, handleSelectUserCollection } =
-    usePromptAndCommand()
+    useWorkflowAndCommand()
 
   return (
     <>
-      <PromptPicker />
+      <WorkflowPicker />
 
       <FilePicker
         isOpen={isFilePickerOpen}

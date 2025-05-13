@@ -5,63 +5,63 @@ import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { TextareaAutosize } from "../ui/textarea-autosize"
-import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
+import { useWorkflowAndCommand } from "./chat-hooks/use-workflow-and-command"
 
-interface PromptPickerProps {}
+interface WorkflowPickerProps {}
 
-export const PromptPicker: FC<PromptPickerProps> = ({}) => {
+export const WorkflowPicker: FC<WorkflowPickerProps> = ({}) => {
   const {
-    prompts,
-    isPromptPickerOpen,
-    setIsPromptPickerOpen,
-    focusPrompt,
+    workflows,
+    isWorkflowPickerOpen,
+    setIsWorkflowPickerOpen,
+    focusWorkflow,
     slashCommand
   } = useContext(ChatbotUIContext)
 
-  const { handleSelectPrompt } = usePromptAndCommand()
+  const { handleSelectWorkflow } = useWorkflowAndCommand()
 
   const itemsRef = useRef<(HTMLDivElement | null)[]>([])
 
-  const [promptVariables, setPromptVariables] = useState<
+  const [workflowVariables, setWorkflowVariables] = useState<
     {
-      promptId: string
+      workflowId: string
       name: string
       value: string
     }[]
   >([])
-  const [showPromptVariables, setShowPromptVariables] = useState(false)
+  const [showWorkflowVariables, setShowWorkflowVariables] = useState(false)
 
   useEffect(() => {
-    if (focusPrompt && itemsRef.current[0]) {
+    if (focusWorkflow && itemsRef.current[0]) {
       itemsRef.current[0].focus()
     }
-  }, [focusPrompt])
+  }, [focusWorkflow])
 
   const [isTyping, setIsTyping] = useState(false)
 
-  const filteredPrompts = prompts.filter(prompt =>
-    prompt.name.toLowerCase().includes(slashCommand.toLowerCase())
+  const filteredWorkflows = workflows.filter(workflow =>
+    workflow.name.toLowerCase().includes(slashCommand.toLowerCase())
   )
 
   const handleOpenChange = (isOpen: boolean) => {
-    setIsPromptPickerOpen(isOpen)
+    setIsWorkflowPickerOpen(isOpen)
   }
 
-  const callSelectPrompt = (prompt: Tables<"prompts">) => {
+  const callSelectWorkflow = (workflow: Tables<"workflows">) => {
     const regex = /\{\{.*?\}\}/g
-    const matches = prompt.content.match(regex)
+    const matches = workflow.content.match(regex)
 
     if (matches) {
-      const newPromptVariables = matches.map(match => ({
-        promptId: prompt.id,
+      const newWorkflowVariables = matches.map(match => ({
+        workflowId: workflow.id,
         name: match.replace(/\{\{|\}\}/g, ""),
         value: ""
       }))
 
-      setPromptVariables(newPromptVariables)
-      setShowPromptVariables(true)
+      setWorkflowVariables(newWorkflowVariables)
+      setShowWorkflowVariables(true)
     } else {
-      handleSelectPrompt(prompt)
+      handleSelectWorkflow(workflow)
       handleOpenChange(false)
     }
   }
@@ -73,11 +73,11 @@ export const PromptPicker: FC<PromptPickerProps> = ({}) => {
         handleOpenChange(false)
       } else if (e.key === "Enter") {
         e.preventDefault()
-        callSelectPrompt(filteredPrompts[index])
+        callSelectWorkflow(filteredWorkflows[index])
       } else if (
         (e.key === "Tab" || e.key === "ArrowDown") &&
         !e.shiftKey &&
-        index === filteredPrompts.length - 1
+        index === filteredWorkflows.length - 1
       ) {
         e.preventDefault()
         itemsRef.current[0]?.focus()
@@ -97,58 +97,61 @@ export const PromptPicker: FC<PromptPickerProps> = ({}) => {
       }
     }
 
-  const handleSubmitPromptVariables = () => {
-    const newPromptContent = promptVariables.reduce(
+  const handleSubmitWorkflowVariables = () => {
+    const newWorkflowContent = workflowVariables.reduce(
       (prevContent, variable) =>
         prevContent.replace(
           new RegExp(`\\{\\{${variable.name}\\}\\}`, "g"),
           variable.value
         ),
-      prompts.find(prompt => prompt.id === promptVariables[0].promptId)
-        ?.content || ""
+      workflows.find(
+        workflow => workflow.id === workflowVariables[0].workflowId
+      )?.content || ""
     )
 
-    const newPrompt: any = {
-      ...prompts.find(prompt => prompt.id === promptVariables[0].promptId),
-      content: newPromptContent
+    const newWorkflow: any = {
+      ...workflows.find(
+        workflow => workflow.id === workflowVariables[0].workflowId
+      ),
+      content: newWorkflowContent
     }
 
-    handleSelectPrompt(newPrompt)
+    handleSelectWorkflow(newWorkflow)
     handleOpenChange(false)
-    setShowPromptVariables(false)
-    setPromptVariables([])
+    setShowWorkflowVariables(false)
+    setWorkflowVariables([])
   }
 
-  const handleCancelPromptVariables = () => {
-    setShowPromptVariables(false)
-    setPromptVariables([])
+  const handleCancelWorkflowVariables = () => {
+    setShowWorkflowVariables(false)
+    setWorkflowVariables([])
   }
 
-  const handleKeydownPromptVariables = (
+  const handleKeydownWorkflowVariables = (
     e: React.KeyboardEvent<HTMLDivElement>
   ) => {
     if (!isTyping && e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      handleSubmitPromptVariables()
+      handleSubmitWorkflowVariables()
     }
   }
 
   return (
     <>
-      {isPromptPickerOpen && (
+      {isWorkflowPickerOpen && (
         <div className="bg-background flex flex-col space-y-1 rounded-xl border-2 p-2 text-sm">
-          {showPromptVariables ? (
+          {showWorkflowVariables ? (
             <Dialog
-              open={showPromptVariables}
-              onOpenChange={setShowPromptVariables}
+              open={showWorkflowVariables}
+              onOpenChange={setShowWorkflowVariables}
             >
-              <DialogContent onKeyDown={handleKeydownPromptVariables}>
+              <DialogContent onKeyDown={handleKeydownWorkflowVariables}>
                 <DialogHeader>
-                  <DialogTitle>Enter Prompt Variables</DialogTitle>
+                  <DialogTitle>Enter Workflow Variables</DialogTitle>
                 </DialogHeader>
 
                 <div className="mt-2 space-y-6">
-                  {promptVariables.map((variable, index) => (
+                  {workflowVariables.map((variable, index) => (
                     <div key={index} className="flex flex-col space-y-2">
                       <Label>{variable.name}</Label>
 
@@ -156,9 +159,9 @@ export const PromptPicker: FC<PromptPickerProps> = ({}) => {
                         placeholder={`Enter a value for ${variable.name}...`}
                         value={variable.value}
                         onValueChange={value => {
-                          const newPromptVariables = [...promptVariables]
-                          newPromptVariables[index].value = value
-                          setPromptVariables(newPromptVariables)
+                          const newWorkflowVariables = [...workflowVariables]
+                          newWorkflowVariables[index].value = value
+                          setWorkflowVariables(newWorkflowVariables)
                         }}
                         minRows={3}
                         maxRows={5}
@@ -173,37 +176,37 @@ export const PromptPicker: FC<PromptPickerProps> = ({}) => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={handleCancelPromptVariables}
+                    onClick={handleCancelWorkflowVariables}
                   >
                     Cancel
                   </Button>
 
-                  <Button size="sm" onClick={handleSubmitPromptVariables}>
+                  <Button size="sm" onClick={handleSubmitWorkflowVariables}>
                     Submit
                   </Button>
                 </div>
               </DialogContent>
             </Dialog>
-          ) : filteredPrompts.length === 0 ? (
+          ) : filteredWorkflows.length === 0 ? (
             <div className="text-md flex h-14 cursor-pointer items-center justify-center italic hover:opacity-50">
-              No matching prompts.
+              No matching workflows.
             </div>
           ) : (
-            filteredPrompts.map((prompt, index) => (
+            filteredWorkflows.map((workflow, index) => (
               <div
-                key={prompt.id}
+                key={workflow.id}
                 ref={ref => {
                   itemsRef.current[index] = ref
                 }}
                 tabIndex={0}
                 className="hover:bg-accent focus:bg-accent flex cursor-pointer flex-col rounded p-2 focus:outline-none"
-                onClick={() => callSelectPrompt(prompt)}
+                onClick={() => callSelectWorkflow(workflow)}
                 onKeyDown={getKeyDownHandler(index)}
               >
-                <div className="font-bold">{prompt.name}</div>
+                <div className="font-bold">{workflow.name}</div>
 
                 <div className="truncate text-sm opacity-80">
-                  {prompt.content}
+                  {workflow.content}
                 </div>
               </div>
             ))

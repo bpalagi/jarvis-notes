@@ -18,7 +18,7 @@ import { ChatCommandInput } from "./chat-command-input"
 import { ChatFilesDisplay } from "./chat-files-display"
 import { useChatHandler } from "./chat-hooks/use-chat-handler"
 import { useChatHistoryHandler } from "./chat-hooks/use-chat-history"
-import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
+import { useWorkflowAndCommand } from "./chat-hooks/use-workflow-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 
 interface ChatInputProps {}
@@ -41,14 +41,14 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
     isGenerating,
     selectedPreset,
     selectedAssistant,
-    focusPrompt,
-    setFocusPrompt,
+    focusWorkflow,
+    setFocusWorkflow,
     focusFile,
     focusTool,
     setFocusTool,
     isToolPickerOpen,
-    isPromptPickerOpen,
-    setIsPromptPickerOpen,
+    isWorkflowPickerOpen,
+    setIsWorkflowPickerOpen,
     isFilePickerOpen,
     setFocusFile,
     chatSettings,
@@ -64,7 +64,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
     handleFocusChatInput
   } = useChatHandler()
 
-  const { handleInputChange } = usePromptAndCommand()
+  const { handleInputChange } = useWorkflowAndCommand()
 
   const { filesToAccept, handleSelectDeviceFile } = useSelectFileHandler()
 
@@ -84,13 +84,13 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!isTyping && event.key === "Enter" && !event.shiftKey) {
       event.preventDefault()
-      setIsPromptPickerOpen(false)
+      setIsWorkflowPickerOpen(false)
       handleSendMessage(userInput, chatMessages, false)
     }
 
     // Consolidate conditions to avoid TypeScript error
     if (
-      isPromptPickerOpen ||
+      isWorkflowPickerOpen ||
       isFilePickerOpen ||
       isToolPickerOpen ||
       isAssistantPickerOpen
@@ -102,7 +102,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
       ) {
         event.preventDefault()
         // Toggle focus based on picker type
-        if (isPromptPickerOpen) setFocusPrompt(!focusPrompt)
+        if (isWorkflowPickerOpen) setFocusWorkflow(!focusWorkflow)
         if (isFilePickerOpen) setFocusFile(!focusFile)
         if (isToolPickerOpen) setFocusTool(!focusTool)
         if (isAssistantPickerOpen) setFocusAssistant(!focusAssistant)

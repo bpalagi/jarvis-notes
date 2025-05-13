@@ -25,7 +25,7 @@ export const AssistantItem: FC<AssistantItemProps> = ({ assistant }) => {
   const [description, setDescription] = useState(assistant.description)
   const [assistantChatSettings, setAssistantChatSettings] = useState({
     model: assistant.model,
-    prompt: assistant.prompt,
+    workflow: assistant.workflow,
     temperature: assistant.temperature,
     contextLength: assistant.context_length,
     includeProfileContext: assistant.include_profile_context,
@@ -136,7 +136,7 @@ export const AssistantItem: FC<AssistantItemProps> = ({ assistant }) => {
         context_length: assistantChatSettings.contextLength,
         model: assistantChatSettings.model,
         image_path: assistant.image_path,
-        prompt: assistantChatSettings.prompt,
+        workflow: assistantChatSettings.workflow,
         temperature: assistantChatSettings.temperature
       }}
       renderInputs={(renderState: {

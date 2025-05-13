@@ -7,14 +7,14 @@ import { Tables } from "@/supabase/types"
 import { LLMID } from "@/types"
 import { useContext } from "react"
 
-export const usePromptAndCommand = () => {
+export const useWorkflowAndCommand = () => {
   const {
     chatFiles,
     setNewMessageFiles,
     userInput,
     setUserInput,
     setShowFilesDisplay,
-    setIsPromptPickerOpen,
+    setIsWorkflowPickerOpen,
     setIsFilePickerOpen,
     setSlashCommand,
     setHashtagCommand,
@@ -43,7 +43,7 @@ export const usePromptAndCommand = () => {
       setIsAssistantPickerOpen(true)
       setAtCommand(atMatch[1])
     } else if (slashMatch) {
-      setIsPromptPickerOpen(true)
+      setIsWorkflowPickerOpen(true)
       setSlashCommand(slashMatch[1])
     } else if (hashtagMatch) {
       setIsFilePickerOpen(true)
@@ -52,7 +52,7 @@ export const usePromptAndCommand = () => {
       setIsToolPickerOpen(true)
       setToolCommand(toolMatch[1])
     } else {
-      setIsPromptPickerOpen(false)
+      setIsWorkflowPickerOpen(false)
       setIsFilePickerOpen(false)
       setIsToolPickerOpen(false)
       setIsAssistantPickerOpen(false)
@@ -65,9 +65,9 @@ export const usePromptAndCommand = () => {
     setUserInput(value)
   }
 
-  const handleSelectPrompt = (prompt: Tables<"prompts">) => {
-    setIsPromptPickerOpen(false)
-    setUserInput(userInput.replace(/\/[^ ]*$/, "") + prompt.content)
+  const handleSelectWorkflow = (workflow: Tables<"workflows">) => {
+    setIsWorkflowPickerOpen(false)
+    setUserInput(userInput.replace(/\/[^ ]*$/, "") + workflow.content)
   }
 
   const handleSelectUserFile = async (file: Tables<"files">) => {
@@ -181,7 +181,7 @@ export const usePromptAndCommand = () => {
 
   return {
     handleInputChange,
-    handleSelectPrompt,
+    handleSelectWorkflow,
     handleSelectUserFile,
     handleSelectUserCollection,
     handleSelectTool,

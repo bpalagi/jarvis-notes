@@ -3,7 +3,7 @@ import { Tables } from "@/supabase/types"
 import { IconRobotFace } from "@tabler/icons-react"
 import Image from "next/image"
 import { FC, useContext, useEffect, useRef } from "react"
-import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
+import { useWorkflowAndCommand } from "./chat-hooks/use-workflow-and-command"
 
 interface AssistantPickerProps {}
 
@@ -17,7 +17,7 @@ export const AssistantPicker: FC<AssistantPickerProps> = ({}) => {
     setIsAssistantPickerOpen
   } = useContext(ChatbotUIContext)
 
-  const { handleSelectAssistant } = usePromptAndCommand()
+  const { handleSelectAssistant } = useWorkflowAndCommand()
 
   const itemsRef = useRef<(HTMLDivElement | null)[]>([])
 

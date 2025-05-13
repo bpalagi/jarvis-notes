@@ -8,7 +8,7 @@ import { uploadMessageImage } from "@/db/storage/message-images"
 import {
   buildFinalMessages,
   adaptMessagesForGoogleGemini
-} from "@/lib/build-prompt"
+} from "@/lib/build-workflow"
 import { consumeReadableStream } from "@/lib/consume-stream"
 import { Tables, TablesInsert } from "@/supabase/types"
 import {
@@ -366,7 +366,7 @@ export const handleCreateChat = async (
     include_workspace_instructions: chatSettings.includeWorkspaceInstructions,
     model: chatSettings.model,
     name: messageContent.substring(0, 100),
-    prompt: chatSettings.prompt,
+    workflow: chatSettings.workflow,
     temperature: chatSettings.temperature,
     embeddings_provider: chatSettings.embeddingsProvider
   })
