@@ -1217,6 +1217,89 @@ export type Database = {
           },
         ]
       }
+      workflow_workspaces: {
+        Row: {
+          created_at: string
+          updated_at: string | null
+          user_id: string
+          workflow_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          updated_at?: string | null
+          user_id: string
+          workflow_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          updated_at?: string | null
+          user_id?: string
+          workflow_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_workspaces_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_workspaces_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflows: {
+        Row: {
+          content: Json | null
+          created_at: string
+          description: string
+          folder_id: string | null
+          id: string
+          name: string
+          sharing: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          description: string
+          folder_id?: string | null
+          id?: string
+          name: string
+          sharing?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          description?: string
+          folder_id?: string | null
+          id?: string
+          name?: string
+          sharing?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflows_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspaces: {
         Row: {
           created_at: string

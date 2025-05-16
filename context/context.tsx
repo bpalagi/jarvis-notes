@@ -38,6 +38,10 @@ interface ChatbotUIContext {
   setTools: Dispatch<SetStateAction<Tables<"tools">[]>>
   workspaces: Tables<"workspaces">[]
   setWorkspaces: Dispatch<SetStateAction<Tables<"workspaces">[]>>
+  workflows: Tables<"workflows">[]
+  setWorkflows: Dispatch<SetStateAction<Tables<"workflows">[]>>
+  // actions: Tables<"actions">[]
+  // setActions: Dispatch<SetStateAction<Tables<"actions">[]>>
 
   // MODELS STORE
   envKeyMap: Record<string, VALID_ENV_KEYS>
@@ -136,6 +140,18 @@ interface ChatbotUIContext {
   setSelectedTools: Dispatch<SetStateAction<Tables<"tools">[]>>
   toolInUse: string
   setToolInUse: Dispatch<SetStateAction<string>>
+
+  // WORKFLOW STORE
+  selectedWorkflows: Tables<"workflows">[]
+  setSelectedWorkflows: Dispatch<SetStateAction<Tables<"workflows">[]>>
+  workflowInUse: string
+  setWorkflowInUse: Dispatch<SetStateAction<string>>
+
+  // // ACTION STORE
+  // selectedActions: Tables<"actions">[]
+  // setSelectedActions: Dispatch<SetStateAction<Tables<"actions">[]>>
+  // actionInUse: string
+  // setActionInUse: Dispatch<SetStateAction<string>>
 }
 
 export const ChatbotUIContext = createContext<ChatbotUIContext>({
@@ -164,6 +180,10 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setTools: () => {},
   workspaces: [],
   setWorkspaces: () => {},
+  workflows: [],
+  setWorkflows: () => {},
+  // actions: [],
+  // setActions: () => {},
 
   // MODELS STORE
   envKeyMap: {},
@@ -261,5 +281,17 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   selectedTools: [],
   setSelectedTools: () => {},
   toolInUse: "none",
-  setToolInUse: () => {}
+  setToolInUse: () => {},
+
+  // WORKFLOW STORE
+  selectedWorkflows: [],
+  setSelectedWorkflows: () => {},
+  workflowInUse: "none",
+  setWorkflowInUse: () => {}
+
+  // // ACTION STORE
+  // selectedActions: [],
+  // setSelectedActions: () => {},
+  // actionInUse: "none",
+  // setActionInUse: () => {}
 })

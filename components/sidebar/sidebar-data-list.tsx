@@ -7,6 +7,7 @@ import { updateModel } from "@/db/models"
 import { updatePreset } from "@/db/presets"
 import { updatePrompt } from "@/db/prompts"
 import { updateTool } from "@/db/tools"
+import { updateWorkflow } from "@/db/workflows"
 import { cn } from "@/lib/utils"
 import { Tables } from "@/supabase/types"
 import { ContentType, DataItemType, DataListType } from "@/types"
@@ -21,6 +22,7 @@ import { ModelItem } from "./items/models/model-item"
 import { PresetItem } from "./items/presets/preset-item"
 import { PromptItem } from "./items/prompts/prompt-item"
 import { ToolItem } from "./items/tools/tool-item"
+import { WorkflowItem } from "./items/workflows/workflow-item"
 
 interface SidebarDataListProps {
   contentType: ContentType
@@ -41,7 +43,9 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
     setCollections,
     setAssistants,
     setTools,
-    setModels
+    setModels,
+    setWorkflows
+    // setActions
   } = useContext(ChatbotUIContext)
 
   const divRef = useRef<HTMLDivElement>(null)
@@ -87,6 +91,14 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
 
       case "models":
         return <ModelItem key={item.id} model={item as Tables<"models">} />
+
+      case "workflows":
+        return (
+          <WorkflowItem key={item.id} workflow={item as Tables<"workflows">} />
+        )
+
+      // case "actions":
+      //   return <ModelItem key={item.id} model={item as Tables<"actions">} />
 
       default:
         return null
@@ -140,7 +152,9 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
     collections: updateCollection,
     assistants: updateAssistant,
     tools: updateTool,
-    models: updateModel
+    models: updateModel,
+    workflows: updateWorkflow
+    // actions: updateAction
   }
 
   const stateUpdateFunctions = {
@@ -151,7 +165,9 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
     collections: setCollections,
     assistants: setAssistants,
     tools: setTools,
-    models: setModels
+    models: setModels,
+    workflows: setWorkflows
+    // actions: setActions
   }
 
   const updateFolder = async (itemId: string, folderId: string | null) => {

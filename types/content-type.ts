@@ -8,4 +8,4 @@ export type ContentType =
   | "tools"
   | "models"
   | "workflows"
-  | "actions"
+// | "actions"

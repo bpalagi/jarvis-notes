@@ -86,6 +86,7 @@
     "react": "^18",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",
+    "react-editor-js": "^2.1.0",
     "react-hook-form": "^7.48.2",
     "react-i18next": "^14.0.0",
     "react-markdown": "^9.0.1",
