@@ -18,9 +18,11 @@ export const SidebarContent: FC<SidebarContentProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredData: any = data.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredData: any = data
+    ? data.filter(item =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : []
 
   return (
     // Subtract 50px for the height of the workspace settings
@@ -28,7 +30,7 @@ export const SidebarContent: FC<SidebarContentProps> = ({
       <div className="mt-2 flex items-center">
         <SidebarCreateButtons
           contentType={contentType}
-          hasData={data.length > 0}
+          hasData={(data || []).length > 0}
         />
       </div>
 

@@ -12,6 +12,7 @@ import { CreateModel } from "./items/models/create-model"
 import { CreatePreset } from "./items/presets/create-preset"
 import { CreatePrompt } from "./items/prompts/create-prompt"
 import { CreateTool } from "./items/tools/create-tool"
+import { CreateWorkflow } from "./items/workflows/create-workflow"
 
 interface SidebarCreateButtonsProps {
   contentType: ContentType
@@ -33,6 +34,7 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
   const [isCreatingAssistant, setIsCreatingAssistant] = useState(false)
   const [isCreatingTool, setIsCreatingTool] = useState(false)
   const [isCreatingModel, setIsCreatingModel] = useState(false)
+  const [isCreatingWorkflow, setIsCreatingWorkflow] = useState(false)
 
   const handleCreateFolder = async () => {
     if (!profile) return
@@ -55,19 +57,19 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
           handleNewChat()
         }
 
-      case "presets":
-        return async () => {
-          setIsCreatingPreset(true)
-        }
+      // case "presets":
+      //   return async () => {
+      //     setIsCreatingPreset(true)
+      //   }
 
-      case "prompts":
-        return async () => {
-          setIsCreatingPrompt(true)
-        }
+      // case "prompts":
+      //   return async () => {
+      //     setIsCreatingPrompt(true)
+      //   }
 
-      case "files":
+      case "workflows":
         return async () => {
-          setIsCreatingFile(true)
+          setIsCreatingWorkflow(true)
         }
 
       case "collections":
@@ -75,20 +77,25 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
           setIsCreatingCollection(true)
         }
 
-      case "assistants":
+      case "files":
         return async () => {
-          setIsCreatingAssistant(true)
+          setIsCreatingFile(true)
         }
 
-      case "tools":
-        return async () => {
-          setIsCreatingTool(true)
-        }
+      // case "assistants":
+      //   return async () => {
+      //     setIsCreatingAssistant(true)
+      //   }
 
-      case "models":
-        return async () => {
-          setIsCreatingModel(true)
-        }
+      // case "tools":
+      //   return async () => {
+      //     setIsCreatingTool(true)
+      //   }
+
+      // case "models":
+      //   return async () => {
+      //     setIsCreatingModel(true)
+      //   }
 
       default:
         break
@@ -97,7 +104,13 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
 
   return (
     <div className="flex w-full space-x-2">
-      <Button className="flex h-[36px] grow" onClick={getCreateFunction()}>
+      <Button
+        className="flex h-[36px] grow"
+        onClick={() => {
+          const createFn = getCreateFunction()
+          if (createFn) createFn()
+        }}
+      >
         <IconPlus className="mr-1" size={20} />
         New{" "}
         {contentType.charAt(0).toUpperCase() +
@@ -110,22 +123,25 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
         </Button>
       )}
 
-      {isCreatingPrompt && (
+      {/* {isCreatingPrompt && (
         <CreatePrompt
           isOpen={isCreatingPrompt}
           onOpenChange={setIsCreatingPrompt}
         />
-      )}
+      )} */}
 
-      {isCreatingPreset && (
+      {/* {isCreatingPreset && (
         <CreatePreset
           isOpen={isCreatingPreset}
           onOpenChange={setIsCreatingPreset}
         />
-      )}
+      )} */}
 
-      {isCreatingFile && (
-        <CreateFile isOpen={isCreatingFile} onOpenChange={setIsCreatingFile} />
+      {isCreatingWorkflow && (
+        <CreateWorkflow
+          isOpen={isCreatingWorkflow}
+          onOpenChange={setIsCreatingWorkflow}
+        />
       )}
 
       {isCreatingCollection && (
@@ -135,7 +151,11 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
         />
       )}
 
-      {isCreatingAssistant && (
+      {isCreatingFile && (
+        <CreateFile isOpen={isCreatingFile} onOpenChange={setIsCreatingFile} />
+      )}
+
+      {/* {isCreatingAssistant && (
         <CreateAssistant
           isOpen={isCreatingAssistant}
           onOpenChange={setIsCreatingAssistant}
@@ -151,7 +171,7 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
           isOpen={isCreatingModel}
           onOpenChange={setIsCreatingModel}
         />
-      )}
+      )} */}
     </div>
   )
 }

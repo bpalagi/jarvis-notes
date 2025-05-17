@@ -31,9 +31,18 @@ export const CreateWorkflow: FC<CreateWorkflowProps> = ({
       createState={
         {
           user_id: profile.user_id,
+          workspace_id: selectedWorkspace.id,
           name,
           description,
-          content: content ? JSON.parse(content) : {}
+          content: (() => {
+            try {
+              console.log("Parsing content JSON:", content)
+              return content ? JSON.parse(content) : {}
+            } catch (e) {
+              console.error("JSON parse error:", e)
+              return {}
+            }
+          })()
         } as TablesInsert<"workflows">
       }
       isOpen={isOpen}

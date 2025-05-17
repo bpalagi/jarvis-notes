@@ -23,6 +23,7 @@ import {
   uploadAssistantImage
 } from "@/db/storage/assistant-images"
 import { createTool } from "@/db/tools"
+import { createWorkflow } from "@/db/workflows"
 import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import { Tables, TablesInsert } from "@/supabase/types"
 import { ContentType } from "@/types"
@@ -56,7 +57,8 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
     setAssistants,
     setAssistantImages,
     setTools,
-    setModels
+    setModels,
+    setWorkflows
   } = useContext(ChatbotUIContext)
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -170,7 +172,8 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
       return updatedAssistant
     },
     tools: createTool,
-    models: createModel
+    models: createModel,
+    workflows: createWorkflow
   }
 
   const stateUpdateFunctions = {
@@ -181,29 +184,50 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
     collections: setCollections,
     assistants: setAssistants,
     tools: setTools,
-    models: setModels
+    models: setModels,
+    workflows: setWorkflows
   }
 
   const handleCreate = async () => {
     try {
-      if (!selectedWorkspace) return
-      if (isTyping) return // Prevent creation while typing
+      if (!selectedWorkspace) {
+        console.log("No workspace selected")
+        return
+      }
+      if (isTyping) {
+        console.log("User is still typing")
+        return
+      }
 
       const createFunction = createFunctions[contentType]
       const setStateFunction = stateUpdateFunctions[contentType]
 
-      if (!createFunction || !setStateFunction) return
+      console.log("Creating:", contentType, createFunction, setStateFunction)
+
+      if (!createFunction || !setStateFunction) {
+        console.log("Missing function:", { createFunction, setStateFunction })
+        return
+      }
 
       setCreating(true)
+      console.log("Create state:", createState)
 
-      const newItem = await createFunction(createState, selectedWorkspace.id)
+      try {
+        const newItem = await createFunction(createState, selectedWorkspace.id)
+        console.log("Created item:", newItem)
 
-      setStateFunction((prevItems: any) => [...prevItems, newItem])
+        setStateFunction((prevItems: any) => [...prevItems, newItem])
 
-      onOpenChange(false)
-      setCreating(false)
+        onOpenChange(false)
+        setCreating(false)
+      } catch (innerError) {
+        console.error("Error creating item:", innerError)
+        toast.error(`Error creating ${contentType.slice(0, -1)}. ${innerError}`)
+        setCreating(false)
+      }
     } catch (error) {
-      toast.error(`Error creating ${contentType.slice(0, -1)}. ${error}.`)
+      console.error("Outer error:", error)
+      toast.error(`Error creating ${contentType.slice(0, -1)}. ${error}`)
       setCreating(false)
     }
   }
