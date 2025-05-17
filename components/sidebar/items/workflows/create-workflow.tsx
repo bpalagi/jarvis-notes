@@ -31,7 +31,6 @@ export const CreateWorkflow: FC<CreateWorkflowProps> = ({
       createState={
         {
           user_id: profile.user_id,
-          workspace_id: selectedWorkspace.id,
           name,
           description,
           content: (() => {

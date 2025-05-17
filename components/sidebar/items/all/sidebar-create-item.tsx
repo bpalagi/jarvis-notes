@@ -216,6 +216,15 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
         const newItem = await createFunction(createState, selectedWorkspace.id)
         console.log("Created item:", newItem)
 
+        if (!newItem) {
+          console.error("Creation failed - returned undefined")
+          toast.error(
+            `Error creating ${contentType.slice(0, -1)}: Operation failed`
+          )
+          setCreating(false)
+          return
+        }
+
         setStateFunction((prevItems: any) => [...prevItems, newItem])
 
         onOpenChange(false)

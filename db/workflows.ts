@@ -68,7 +68,7 @@ export const createWorkflow = async (
     .single()
 
   if (error) {
-    throw new Error(error.message)
+    throw new Error(`Failed to Create Workflow: ${error.message}`)
   }
 
   await createWorkflowWorkspace({
