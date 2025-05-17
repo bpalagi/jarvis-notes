@@ -13,6 +13,13 @@ export async function POST(request: Request) {
     sourceCount: number
   }
 
+  console.log("Retrieval request received:", {
+    userInput: userInput.substring(0, 100) + "...", // Truncate for logging
+    fileIds,
+    embeddingsProvider,
+    sourceCount
+  })
+
   const uniqueFileIds = [...new Set(fileIds)]
 
   try {
@@ -64,11 +71,13 @@ export async function POST(request: Request) {
         })
 
       if (openaiError) {
+        console.error("OpenAI RPC error:", openaiError)
         throw openaiError
       }
 
       chunks = openaiFileItems
     } else if (embeddingsProvider === "local") {
+      console.log("Using local embeddings provider")
       const localEmbedding = await generateLocalEmbedding(userInput)
 
       const { data: localFileItems, error: localFileItemsError } =
@@ -79,6 +88,7 @@ export async function POST(request: Request) {
         })
 
       if (localFileItemsError) {
+        console.error("Local RPC error:", localFileItemsError)
         throw localFileItemsError
       }
 
@@ -93,10 +103,24 @@ export async function POST(request: Request) {
       status: 200
     })
   } catch (error: any) {
-    const errorMessage = error.error?.message || "An unexpected error occurred"
+    console.error("Retrieval API error:", error)
+    // Log more details for debugging
+    console.error("Error type:", typeof error)
+    console.error("Error stack:", error.stack)
+    console.error("Error details:", JSON.stringify(error, null, 2))
+
+    const errorMessage =
+      error.error?.message || error.message || "An unexpected error occurred"
     const errorCode = error.status || 500
-    return new Response(JSON.stringify({ message: errorMessage }), {
-      status: errorCode
-    })
+
+    return new Response(
+      JSON.stringify({
+        message: errorMessage,
+        details: typeof error === "object" ? error.toString() : "Unknown error"
+      }),
+      {
+        status: errorCode
+      }
+    )
   }
 }
