@@ -6,6 +6,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { getProfileByUserId } from "@/db/profile"
 import { getWorkspaceImageFromStorage } from "@/db/storage/workspace-images"
 import { getWorkspacesByUserId } from "@/db/workspaces"
+import { getWorkflowsByUserId } from "@/db/workflows"
 import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import {
   fetchHostedModels,
@@ -168,6 +169,9 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
 
       const workspaces = await getWorkspacesByUserId(user.id)
       setWorkspaces(workspaces)
+
+      const workflows = await getWorkflowsByUserId(user.id)
+      setWorkflows(workflows)
 
       for (const workspace of workspaces) {
         let workspaceImageUrl = ""

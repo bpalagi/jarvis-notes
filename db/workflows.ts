@@ -1,6 +1,20 @@
 import { supabase } from "@/lib/supabase/browser-client"
 import { TablesInsert, TablesUpdate } from "@/supabase/types"
 
+export const getWorkflowsByUserId = async (userId: string) => {
+  const { data: workflows, error } = await supabase
+    .from("workflows")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return workflows || []
+}
+
 export const getWorkflowById = async (workflowId: string) => {
   const { data: workflow, error } = await supabase
     .from("workflows")
