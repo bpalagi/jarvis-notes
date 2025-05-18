@@ -9,7 +9,9 @@ import { cn } from "@/lib/utils"
 import { ContentType } from "@/types"
 import { IconChevronCompactRight } from "@tabler/icons-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { FC, useState } from "react"
+import { FC, useState, useContext } from "react"
+import { WorkflowsEditor } from "../workflows/workflows-editor"
+import { ChatbotUIContext } from "@/context/context"
 import { useSelectFileHandler } from "../chat/chat-hooks/use-select-file-handler"
 import { CommandK } from "../utility/command-k"
 
@@ -67,6 +69,21 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
     localStorage.setItem("showSidebar", String(!showSidebar))
   }
 
+  // Helper wrapper to get a workflowId from context (first workflow for now)
+  const WorkflowsEditorWrapper = () => {
+    const { workflows, selectedWorkflow } = useContext(ChatbotUIContext)
+    // Use selectedWorkflow if present, otherwise first workflow
+    const workflowId = selectedWorkflow?.id || (workflows && workflows[0]?.id)
+    if (!workflowId) {
+      return (
+        <div className="text-muted-foreground flex size-full items-center justify-center text-xl">
+          No workflows found.
+        </div>
+      )
+    }
+    return <WorkflowsEditor workflowId={workflowId} />
+  }
+
   return (
     <div className="flex size-full">
       <CommandK />
@@ -109,6 +126,8 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
           <div className="flex h-full items-center justify-center bg-black/50 text-2xl text-white">
             drop file here
           </div>
+        ) : contentType === "workflows" ? (
+          <WorkflowsEditorWrapper />
         ) : (
           children
         )}
