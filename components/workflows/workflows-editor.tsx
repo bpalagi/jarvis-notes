@@ -1,87 +1,51 @@
-import { FC, useState, useEffect } from "react"
+import { FC, useEffect, useRef } from "react"
 
 interface WorkflowsEditorProps {
   workflowId: string
 }
 
-// Minimal paragraph block config for Editor.js
-const editorConfig = {
-  holder: "editorjs-paragraph",
-  tools: {
-    paragraph: {
-      class: require("@editorjs/paragraph"),
-      inlineToolbar: true
-    }
-  },
-  data: {
-    blocks: [
-      {
-        type: "paragraph",
-        data: {
-          text: "Start your workflow description here..."
-        }
-      }
-    ]
-  }
-}
-
-export const WorkflowsEditor: FC<WorkflowsEditorProps> = ({ workflowId }) => {
-  const [editor, setEditor] = useState<any>(null)
+const WorkflowsEditor: FC<WorkflowsEditorProps> = ({ workflowId }) => {
+  const editorRef = useRef<any>(null)
 
   useEffect(() => {
-    let editorInstance: any = null
-    let isMounted = true
-    if (typeof window !== "undefined" && !editor) {
-      // Remove any previous editorjs content to prevent duplicates
-      const holder = document.getElementById("editorjs-paragraph")
-      if (holder) holder.innerHTML = ""
-
-      Promise.all([
-        import("@editorjs/editorjs"),
-        import("@editorjs/paragraph")
-      ]).then(([EditorJSModule, ParagraphModule]) => {
-        // Use only the default export for Paragraph (for type compatibility)
-        const Paragraph = ParagraphModule.default
-        editorInstance = new EditorJSModule.default({
-          holder: "editorjs-paragraph",
-          tools: {
-            paragraph: {
-              class: Paragraph,
-              inlineToolbar: true
-            }
-          },
-          data: {
-            blocks: [
-              {
-                type: "paragraph",
-                data: {
-                  text: "Start your workflow description here..."
-                }
-              }
-            ]
+    let editor: any
+    let mounted = true
+    const loadEditor = async () => {
+      const EditorJS = (await import("@editorjs/editorjs")).default
+      const Paragraph = (await import("@editorjs/paragraph")).default
+      if (!mounted) return
+      editor = new EditorJS({
+        holder: "editorjs-paragraph",
+        tools: {
+          paragraph: {
+            class: Paragraph as any,
+            inlineToolbar: true,
+            config: {}
           }
-        })
-        if (isMounted) setEditor(editorInstance)
+        },
+        data: {
+          blocks: [
+            {
+              type: "paragraph",
+              data: { text: "Store workflow content here..." }
+            }
+          ]
+        }
       })
+      editorRef.current = editor
     }
+    loadEditor()
     return () => {
-      isMounted = false
-      if (editorInstance && editorInstance.destroy) {
-        editorInstance.destroy()
+      mounted = false
+      if (editorRef.current && editorRef.current.destroy) {
+        editorRef.current.destroy()
       }
-      // Clean up the editor container to prevent duplicate editors
       const holder = document.getElementById("editorjs-paragraph")
       if (holder) holder.innerHTML = ""
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <div className="size-full p-4">
-      <div
-        id="editorjs-paragraph"
-        className="bg-background min-h-[200px] rounded border"
-      />
-    </div>
-  )
+  return <div id="editorjs-paragraph" className="min-h-[200px]" />
 }
+
+export default WorkflowsEditor
