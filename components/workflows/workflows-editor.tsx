@@ -45,7 +45,9 @@ const WorkflowsEditor: FC<WorkflowsEditorProps> = ({ workflowId }) => {
     }
   }, [])
 
-  return <div id="editorjs-paragraph" className="min-h-[200px]" />
+  return (
+    <div id="editorjs-paragraph" className="min-h-screen overflow-auto p-10" />
+  )
 }
 
 export default WorkflowsEditor
