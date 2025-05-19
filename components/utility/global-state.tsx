@@ -34,6 +34,9 @@ interface GlobalStateProps {
 }
 
 export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
+  // WORKFLOW SIDEBAR SELECTION
+  const [selectedWorkflow, setSelectedWorkflow] =
+    useState<Tables<"workflows"> | null>(null)
   const router = useRouter()
 
   // PROFILE STORE
@@ -232,6 +235,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setWorkspaces,
         workflows,
         setWorkflows,
+        selectedWorkflow,
+        setSelectedWorkflow,
 
         // MODELS STORE
         envKeyMap,

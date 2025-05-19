@@ -40,6 +40,8 @@ interface ChatbotUIContext {
   setWorkspaces: Dispatch<SetStateAction<Tables<"workspaces">[]>>
   workflows: Tables<"workflows">[]
   setWorkflows: Dispatch<SetStateAction<Tables<"workflows">[]>>
+  selectedWorkflow: Tables<"workflows"> | null
+  setSelectedWorkflow: Dispatch<SetStateAction<Tables<"workflows"> | null>>
   // actions: Tables<"actions">[]
   // setActions: Dispatch<SetStateAction<Tables<"actions">[]>>
 
@@ -170,6 +172,8 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setWorkspaces: () => {},
   workflows: [],
   setWorkflows: () => {},
+  selectedWorkflow: null,
+  setSelectedWorkflow: () => {},
   // actions: [],
   // setActions: () => {},
 
