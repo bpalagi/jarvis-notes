@@ -73,7 +73,7 @@ const WorkflowsEditor: FC<WorkflowsEditorProps> = ({ workflowId }) => {
 
   if (isLoading) {
     return (
-      <div className="text-muted-foreground p-10 text-lg">
+      <div className="text-muted-foreground flex h-full items-center justify-center p-10 text-2xl">
         Loading workflow...
       </div>
     )
